@@ -26,8 +26,8 @@ class EGLBackgroundEnvironment(private val mWidth: Int, private val mHeight: Int
             return
         }
         // Call the renderer initialization routines
-        generalFilter!!.create()
-        generalFilter!!.setSize(mWidth, mHeight)
+        generalFilter?.create()
+        generalFilter?.setSize(mWidth, mHeight)
     }
 
     val bitmap: Bitmap?
@@ -40,8 +40,8 @@ class EGLBackgroundEnvironment(private val mWidth: Int, private val mHeight: Int
                 Log.e(TAG, "getBitmap: This thread does not own the OpenGL context.")
                 return null
             }
-            generalFilter!!.textureId = createTexture(imageBitmap)
-            generalFilter!!.draw()
+            generalFilter?.textureId = createTexture(imageBitmap)
+            generalFilter?.draw()
             return convertToBitmap()
         }
 
@@ -52,7 +52,7 @@ class EGLBackgroundEnvironment(private val mWidth: Int, private val mHeight: Int
     private fun convertToBitmap(): Bitmap {
         val iat = IntArray(mWidth * mHeight)
         val ib = IntBuffer.allocate(mWidth * mHeight)
-        eglEnvironment.gl!!.glReadPixels(0, 0, mWidth, mHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ib)
+        eglEnvironment.gl?.glReadPixels(0, 0, mWidth, mHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ib)
         val ia = ib.array()
 
         // Convert upside down mirror-reversed image to right-side up normal

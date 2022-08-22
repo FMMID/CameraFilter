@@ -58,15 +58,15 @@ class EGLEnvironment {
 
         // Get Display
         egl = EGLContext.getEGL() as EGL10
-        eglDisplay = egl!!.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY)
+        eglDisplay = egl?.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY)
         val version = IntArray(2) //Main version number and minor version number
-        egl!!.eglInitialize(eglDisplay, version)
+        egl?.eglInitialize(eglDisplay, version)
         // Select Config
         val configNum = IntArray(1)
-        egl!!.eglChooseConfig(eglDisplay, attributes, null, 0, configNum)
+        egl?.eglChooseConfig(eglDisplay, attributes, null, 0, configNum)
         if (configNum[0] == 0) return GLError.ConfigErr
         val c = arrayOfNulls<EGLConfig>(configNum[0])
-        egl!!.eglChooseConfig(eglDisplay, attributes, c, configNum[0], configNum)
+        egl?.eglChooseConfig(eglDisplay, attributes, c, configNum[0], configNum)
         eglConfig = c[0]
         //Create Surface
         val surAttr = intArrayOf(
@@ -80,31 +80,31 @@ class EGLEnvironment {
             EGL_CONTEXT_CLIENT_VERSION, 2,
             EGL10.EGL_NONE
         )
-        eglContext = egl!!.eglCreateContext(eglDisplay, eglConfig, shareContext, contextAttr)
+        eglContext = egl?.eglCreateContext(eglDisplay, eglConfig, shareContext, contextAttr)
         makeCurrent()
         return GLError.OK
     }
 
     fun destroy() {
-        egl!!.eglMakeCurrent(
+        egl?.eglMakeCurrent(
             eglDisplay, EGL10.EGL_NO_SURFACE,
             EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT
         )
-        egl!!.eglDestroySurface(eglDisplay, eglSurface)
-        egl!!.eglDestroyContext(eglDisplay, eglContext)
-        egl!!.eglTerminate(eglDisplay)
+        egl?.eglDestroySurface(eglDisplay, eglSurface)
+        egl?.eglDestroyContext(eglDisplay, eglContext)
+        egl?.eglTerminate(eglDisplay)
     }
 
     private fun makeCurrent() {
-        egl!!.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
-        gl = eglContext!!.gl as GL10
+        egl?.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
+        gl = eglContext?.gl as GL10
     }
 
-    private fun createSurface(attr: IntArray): EGLSurface {
+    private fun createSurface(attr: IntArray): EGLSurface? {
         return when (surfaceType) {
-            SURFACE_WINDOW -> egl!!.eglCreateWindowSurface(eglDisplay, eglConfig, surfaceNativeObj, attr)
-            SURFACE_PIM -> egl!!.eglCreatePixmapSurface(eglDisplay, eglConfig, surfaceNativeObj, attr)
-            else -> egl!!.eglCreatePbufferSurface(eglDisplay, eglConfig, attr)
+            SURFACE_WINDOW -> egl?.eglCreateWindowSurface(eglDisplay, eglConfig, surfaceNativeObj, attr)
+            SURFACE_PIM -> egl?.eglCreatePixmapSurface(eglDisplay, eglConfig, surfaceNativeObj, attr)
+            else -> egl?.eglCreatePbufferSurface(eglDisplay, eglConfig, attr)
         }
     }
 

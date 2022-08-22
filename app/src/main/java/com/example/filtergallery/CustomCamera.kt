@@ -171,8 +171,8 @@ class CustomCamera(
 
     private fun unLockFocus() {
         try {
-            captureRequestBuilder!!.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
-            cameraCaptureSession!!.setRepeatingRequest(captureRequest!!, null, cameraHandler)
+            captureRequestBuilder?.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
+            cameraCaptureSession?.setRepeatingRequest(captureRequest!!, null, cameraHandler)
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }

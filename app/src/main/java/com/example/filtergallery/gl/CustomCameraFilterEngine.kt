@@ -11,9 +11,8 @@ import java.nio.FloatBuffer
 
 /**
  * Utils for download shader data for Camera Rendering**/
-class CustomCameraFilterEngine(OESTextureId: Int, context: Context?, private val customFilter: CustomFilter) {
+class CustomCameraFilterEngine(OESTextureId: Int, private var context: Context?, private val customFilter: CustomFilter) {
 
-    private var сontext: Context? = context
     private var buffer: FloatBuffer? = null
     private var vertexShader = -1
     private var fragmentShader = -1
@@ -32,9 +31,9 @@ class CustomCameraFilterEngine(OESTextureId: Int, context: Context?, private val
     init {
         buffer = createBuffer(vertexData)
         vertexShader = loadShader(GLES20.GL_VERTEX_SHADER,
-            сontext?.let { Utils.readShaderFromResource(it, R.raw.default_vertex_shader) })
+            this.context?.let { Utils.readShaderFromResource(it, R.raw.default_vertex_shader) })
         fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER,
-            сontext?.let { Utils.readShaderFromResource(it, customFilter.shaderId) })
+            this.context?.let { Utils.readShaderFromResource(it, customFilter.shaderId) })
         shaderProgram = linkProgram(vertexShader, fragmentShader)
     }
 

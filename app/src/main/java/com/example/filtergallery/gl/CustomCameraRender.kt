@@ -50,11 +50,11 @@ class CustomCameraRender(
         if (surfaceView == null) return
         oesTextureId = Utils.createOESTextureObject()
         customCameraFilterEngine = CustomCameraFilterEngine(oesTextureId, surfaceView?.context, customFilter)
-        dataBuffer = customCameraFilterEngine!!.getBuffer()
-        shaderProgram = customCameraFilterEngine!!.getShaderProgram()
+        dataBuffer = customCameraFilterEngine?.getBuffer()
+        shaderProgram = customCameraFilterEngine?.getShaderProgram() ?: return
         GLES20.glGenFramebuffers(1, fboIds, 0)
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboIds[0])
-        Log.i(TAG, "onSurfaceCreated: mFBOId: " + fboIds[0])
+        Log.i(TAG, "onSurfaceCreated: FBOId: " + fboIds[0])
     }
 
     /**
@@ -80,11 +80,11 @@ class CustomCameraRender(
             isRefreshFilterNeeded = false
             oesTextureId = Utils.createOESTextureObject()
             customCameraFilterEngine = CustomCameraFilterEngine(oesTextureId, surfaceView?.context, customFilter)
-            dataBuffer = customCameraFilterEngine!!.getBuffer()
-            shaderProgram = customCameraFilterEngine!!.getShaderProgram()
+            dataBuffer = customCameraFilterEngine?.getBuffer()
+            shaderProgram = customCameraFilterEngine?.getShaderProgram() ?: return
             GLES20.glGenFramebuffers(1, fboIds, 0)
             GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboIds[0])
-            Log.i(TAG, "onSurfaceCreated: mFBOId: " + fboIds[0])
+            Log.i(TAG, "onSurfaceCreated: FBOId: " + fboIds[0])
         }
 
         if (!isPreviewStarted) {
@@ -162,7 +162,7 @@ class CustomCameraRender(
         surfaceTexture?.setOnFrameAvailableListener { surfaceView.requestRender() }
         val customFilterSurface = CustomFilterSurface(
             nameOfFilter = customFilter.nameOfFilter,
-            surfaceTexture = surfaceTexture!!,
+            surfaceTexture = surfaceTexture ?:  throw RuntimeException("Can't create surface texture"),
             viewPortWidth = currentWidth,
             viewPortHeight = currentHeight
         )
